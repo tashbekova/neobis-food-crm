@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'CRM_food.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'eliza_db',
-        'USER': 'eliza',
+        'NAME': 'db_1',
+        'USER': 'user',
         'PASSWORD': '205090',
         'HOST': 'localhost',
         'PORT': '',

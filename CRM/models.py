@@ -65,21 +65,16 @@ class Role(models.Model):
         return self.name
 
 class UserManager(BaseUserManager):
+    use_in_migrations = True
  
     def _create_user(self, email, password, **extra_fields):
-        """
-        Creates and saves a User with the given email,and password.
-        """
         if not email:
             raise ValueError('The given login must be set')
-        try:
-            with transaction.atomic():
-                user = self.model(email=email, **extra_fields)
-                user.set_password(password)
-                user.save(using=self._db)
-                return user
-        except:
-            raise
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
  
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
@@ -89,24 +84,25 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
- 
         return self._create_user(email, password=password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin): 
-    role = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True)
-
+    role = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, default=None)
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
-    password = models.CharField(max_length=50)
     email = models.EmailField(max_length=40, unique=True)
-    phone=models.CharField(max_length=50)
-    date_joined = models.DateTimeField(default=timezone.now)
+    phone=models.CharField(max_length=150)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default = False)
     
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name', 'surname']
 
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        return self
     class Meta:
         default_related_name="User"
         verbose_name_plural = "Users"
@@ -114,9 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        super(User, self).save(*args, **kwargs)
-        return self
+    
 
 class Order(models.Model): 
 
