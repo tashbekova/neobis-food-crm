@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^create/$', CreateUserAPIView.as_view()),
     url(r'^obtain_token/',obtain_jwt_token),
     url(r'^update/$', UserRetrieveUpdateAPIView.as_view()),
+    url(r'^api-auth/', include('rest_framework.urls')),
 ]
 

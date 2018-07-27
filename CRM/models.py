@@ -33,7 +33,7 @@ class Meal(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
 
     name = models.CharField(max_length=200)
-    price=models.CharField(max_length=200)
+    price=models.IntegerField()
     description=models.CharField(max_length=400)
     
     class Meta:
@@ -44,10 +44,9 @@ class Meal(models.Model):
         return self.name
 
 class MealsToOrder(models.Model): 
-    meals= models.ForeignKey('Meal', on_delete=models.SET_NULL, null=True)
-    orders = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True)
-
-    count = models.IntegerField(default=0)
+    meal = models.ForeignKey('Meal', on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True)
+    count = models.IntegerField(default=1)
     
     class Meta:
         default_related_name="MealsToOrder"
@@ -111,18 +110,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.name
 
     
+class Order(models.Model):
+    waiters=models.ForeignKey('Role', on_delete=models.SET_NULL, null=True)
+    tables = models.ForeignKey('Table', on_delete=models.SET_NULL, null=True)
+    date = models.DateTimeField(blank=True, null=True)
+    meals = models.ManyToManyField(Meal, through='MealsToOrder')
 
-class Order(models.Model): 
-
-    users = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-    tables= models.ForeignKey('Table', on_delete=models.SET_NULL, null=True)
-    is_it_open = models.ForeignKey('Status', on_delete=models.SET_NULL, null=True)
-    meals = models.ManyToManyField(Meal,through='MealsToOrder')
-
-    date=models.DateTimeField(auto_now_add=True)  
     class Meta:
-        default_related_name="Order"
-        verbose_name_plural = "Orders"
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+        default_related_name = 'Orders'
 
 class Status(models.Model):
     name = models.CharField(max_length = 200)
@@ -155,10 +152,12 @@ class ServicePercentage(models.Model):
         return self.name
 
 class Check(models.Model):
-    orders=models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    percentages = models.ForeignKey(ServicePercentage, on_delete=models.SET_NULL, null=True)
-
-    date=models.DateTimeField(auto_now_add=True)
+    waiter = models.ForeignKey(User, related_name='Checks', on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name='Checks')
+    date = models.DateTimeField(blank=True, null=True)
+    persentage = models.ForeignKey(ServicePercentage, on_delete=models.SET_NULL, null=True)
+    total_sum = models.FloatField(default=0,editable=False)
     class Meta:
         verbose_name = 'Check'
         verbose_name_plural = 'Checks'
+        default_related_name = 'checks'
