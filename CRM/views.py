@@ -3,6 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from CRM_food import settings
+from django.shortcuts import render
 
 from CRM.models import *
 from CRM.serializers import *
@@ -12,6 +13,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.signals import user_logged_in
 
+def index(request): 
+    return render(request,'CRM/homePage.html')
+    
 class TableList(generics.ListCreateAPIView):
     queryset = Table.objects.all()
     serializer_class = TableSerializer

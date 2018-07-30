@@ -5,6 +5,7 @@ from .views import CreateUserAPIView, UserRetrieveUpdateAPIView
 from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
+    url(r'^$', views.index, name='index'),
     url(r'^user/$', views.UserList.as_view()),
     url(r'^user/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     url(r'^department/$', views.DepartmentList.as_view()),
