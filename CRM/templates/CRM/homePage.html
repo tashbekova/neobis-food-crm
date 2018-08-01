@@ -25,16 +25,16 @@
  <table border="1" bordercolor="cc215a" width="790" cellpadding="10"> 
          <tr> 
          <td rowspan="4" width="600" bgcolor="e6e6fa"> 
-            <br><br> <a href="http://127.0.0.1:8000/admin/">Админ</a>
-            <br><br> <a href="http://127.0.0.1:8000/department/">Департамент</a>
-            <br><br><a href="http://127.0.0.1:8000/category/">Категория</a>
-            <br><br><a href="http://127.0.0.1:8000/status/">Статус</a>
-            <br><br><a href="http://127.0.0.1:8000/role/">Роль</a>
-            <br><br><a href="http://127.0.0.1:8000/user/">Пользователь</a>
-            <br><br><a href="http://127.0.0.1:8000/table/">Стол</a>
-            <br><br><a href="http://127.0.0.1:8000/meal/">Еда</a>
-            <br><br><a href="http://127.0.0.1:8000/order/">Заказ</a>
-            <br><br><a href="http://127.0.0.1:8000/check/">Чек</a>
+            <br><br><a href="/admin">Админ</a>
+            <br><br><a href="{% url 'department' %}">Департамент</a>
+            <br><br><a href="{% url 'category' %}">Категория</a>
+            <br><br><a href="{% url 'status' %}">Статус</a>
+            <br><br><a href="{% url 'role' %}">Роль</a>
+            <br><br><a href="{% url 'user' %}">Пользователь</a>
+            <br><br><a href="{% url 'table' %}">Стол</a>
+            <br><br><a href="{% url 'meal' %}">Еда</a>
+            <br><br><a href="{% url 'order' %}">Заказ</a>
+            <br><br><a href="{% url 'check' %}">Чек</a>
          </td> 
          
          </tr> 
