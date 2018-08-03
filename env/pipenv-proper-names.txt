@@ -1,0 +1,6 @@
+Django
+Jinja2
+Markdown
+MarkupSafe
+Pygments
+PyJWT
